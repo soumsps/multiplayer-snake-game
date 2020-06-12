@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import CustomButton from '../custom-button/custom-button.component';
 import './game-controller.styles.css';
 
@@ -89,4 +89,4 @@ const GameController = () => {
   );
 };
 
-export default GameController;
+export default memo(GameController);

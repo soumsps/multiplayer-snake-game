@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import GameController from '../../components/game-controller/game-controller.component';
 import GameBoard from '../../components/game-board/game-board.component';
+import { useWindowSize } from '../../custom-hooks/use-window-size.hook';
 import './homepage.styles.css';
 
 const HomePage = () => {
-  const [boardSize, setBoardSize] = useState({
-    row: 40,
-    column: 50,
+  const browserWindowSize = useCallback(useWindowSize());
+  const [boardSize] = useState({
+    row: 60,
+    column: 80,
   });
-  const [boardBlockSize, setBoardBlockSize] = useState(12);
+  const [boardBlockSize, setBoardBlockSize] = useState(null);
+
+  useEffect(() => {
+    const extraColumnPadding = 4;
+    if (browserWindowSize.width < 820)
+      setBoardBlockSize(
+        browserWindowSize.width / (boardSize.column + extraColumnPadding)
+      );
+    else if (browserWindowSize.width < 1024) setBoardBlockSize(10);
+    else if (browserWindowSize.width > 1024) setBoardBlockSize(11);
+  }, [browserWindowSize, boardSize]);
 
   return (
     <div className=" wrapper">
