@@ -5,70 +5,65 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import { useWindowSize } from '../../custom-hooks/use-window-size.hook';
 import { useGameLoop } from '../../custom-hooks/use-game-loop.hook';
 import { calculateBlockSize } from '../../game-utility/game-board';
+import { drawSnake } from '../../game-utility/snake';
+import { drawFood, getRandomFoodPosition } from '../../game-utility/food';
 import './homepage.styles.css';
 
 const HomePage = () => {
   const browserWindowSize = useCallback(useWindowSize());
   const [boardSize] = useState({
-    row: 60,
-    column: 80,
+    row: 30,
+    column: 50,
   });
   const [boardBlockSize, setBoardBlockSize] = useState(null);
 
   //const [isSinglePlayerMode] = useState(true);
   //const [hasGameStarted, setHasGameStarted] = useState(false);
   //const [gameStatus, setGameStatus] = useState(null); // possible modes:  playing, paused, and finished
+  const foodPositionRef = useRef(null);
   const snakeRef = useRef({
     playerID: 'quft-yuytg',
     body: [
-      { x: 4, y: 5 },
-      { x: 4, y: 6 },
-      { x: 4, y: 7 },
+      [4, 5],
+      [4, 6],
+      [4, 7],
     ],
     color: 'red',
     speed: 200,
   });
   const gameBoardRef = useRef(null);
-
   let lastSnakeMovementTime = 0;
 
   const updateData = () => {};
 
   const drawData = () => {
-    draw(gameBoardRef.current, snakeRef.current.body);
+    drawSnake(
+      gameBoardRef.current,
+      snakeRef.current.body,
+      snakeRef.current.color
+    );
+    drawFood(gameBoardRef.current, foodPositionRef.current);
   };
 
+  // runs every 16.67ms
   const update = (currentTime) => {
     const secondsSinceLastSnakeMove = currentTime - lastSnakeMovementTime;
     if (secondsSinceLastSnakeMove > snakeRef.current.speed) {
       lastSnakeMovementTime = currentTime;
-      //  console.log('move snake');
       updateData();
     }
-
-    //console.log('frame');
     drawData();
   };
 
   useGameLoop(update);
 
   useEffect(() => {
+    foodPositionRef.current = getRandomFoodPosition(boardSize);
+  }, [boardSize]);
+
+  useEffect(() => {
     setBoardBlockSize(calculateBlockSize(browserWindowSize, boardSize));
   }, [browserWindowSize, boardSize]);
-
-  function draw(gameBoard, snakeBody) {
-    if (!gameBoard) return;
-    gameBoard.innerHTML = '';
-    snakeBody.forEach((segment) => {
-      const snakeElement = document.createElement('div');
-      snakeElement.style.gridRowStart = segment.y;
-      snakeElement.style.gridColumnStart = segment.x;
-      snakeElement.classList.add('snake');
-      gameBoard.appendChild(snakeElement);
-    });
-  }
-
-  //console.log(gameBoardRef.current);
 
   return (
     <div className=" wrapper">
