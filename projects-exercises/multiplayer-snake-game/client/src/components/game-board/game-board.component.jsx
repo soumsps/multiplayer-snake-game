@@ -14,22 +14,7 @@ const GameBoard = forwardRef(({ boardSize, boardBlockSize }, ref) => {
     border: '1px solid #818181',
   };
 
-  return (
-    <div id="game-board" style={boardStyle} ref={ref}>
-      {/* <div
-        style={{ gridRowStart: 4, gridColumnStart: 5 }}
-        className="snake"
-      ></div>
-      <div
-        style={{ gridRowStart: 4, gridColumnStart: 6 }}
-        className="snake"
-      ></div>
-      <div
-        style={{ gridRowStart: 4, gridColumnStart: 7 }}
-        className="snake"
-      ></div> */}
-    </div>
-  );
+  return <div id="game-board" style={boardStyle} ref={ref}></div>;
 });
 
 export default memo(GameBoard);

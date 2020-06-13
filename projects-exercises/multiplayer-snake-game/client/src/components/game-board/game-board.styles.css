@@ -1,4 +1,10 @@
 .snake {
-  background-color: hsl(200, 100%, 50%);
+  background-color: rgb(179, 179, 179);
   border: 1px solid black;
+}
+
+.food {
+  background-color: rgb(179, 179, 179);
+  border: 1px solid black;
+  border-radius: 20px;
 }
