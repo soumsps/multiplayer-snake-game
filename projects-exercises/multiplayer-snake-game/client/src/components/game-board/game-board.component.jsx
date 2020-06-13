@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
+import React, { forwardRef, memo } from 'react';
 
 import './game-board.styles.css';
 
-const GameBoard = ({ boardSize, boardBlockSize }) => {
+const GameBoard = forwardRef(({ boardSize, boardBlockSize }, ref) => {
   const boardStyle = {
     backgroundColor: '#f5f4f4',
     width: `${Math.round(boardSize.column * boardBlockSize)}px`,
@@ -15,18 +15,21 @@ const GameBoard = ({ boardSize, boardBlockSize }) => {
   };
 
   return (
-    <div style={boardStyle}>
-      <div
-        style={{ gridRowStart: 1, gridColumnStart: 1 }}
-        className="snake"
-      ></div>
-
-      <div
+    <div id="game-board" style={boardStyle} ref={ref}>
+      {/* <div
         style={{ gridRowStart: 4, gridColumnStart: 5 }}
         className="snake"
       ></div>
+      <div
+        style={{ gridRowStart: 4, gridColumnStart: 6 }}
+        className="snake"
+      ></div>
+      <div
+        style={{ gridRowStart: 4, gridColumnStart: 7 }}
+        className="snake"
+      ></div> */}
     </div>
   );
-};
+});
 
 export default memo(GameBoard);

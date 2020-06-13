@@ -14,18 +14,40 @@ const HomePage = () => {
     column: 80,
   });
   const [boardBlockSize, setBoardBlockSize] = useState(null);
-  const snakeSpeedRef = useRef(200);
+
+  //const [isSinglePlayerMode] = useState(true);
+  //const [hasGameStarted, setHasGameStarted] = useState(false);
+  //const [gameStatus, setGameStatus] = useState(null); // possible modes:  playing, paused, and finished
+  const snakeRef = useRef({
+    playerID: 'quft-yuytg',
+    body: [
+      { x: 4, y: 5 },
+      { x: 4, y: 6 },
+      { x: 4, y: 7 },
+    ],
+    color: 'red',
+    speed: 200,
+  });
+  const gameBoardRef = useRef(null);
 
   let lastSnakeMovementTime = 0;
 
+  const updateData = () => {};
+
+  const drawData = () => {
+    draw(gameBoardRef.current, snakeRef.current.body);
+  };
+
   const update = (currentTime) => {
     const secondsSinceLastSnakeMove = currentTime - lastSnakeMovementTime;
-    if (secondsSinceLastSnakeMove > snakeSpeedRef.current) {
+    if (secondsSinceLastSnakeMove > snakeRef.current.speed) {
       lastSnakeMovementTime = currentTime;
       //  console.log('move snake');
+      updateData();
     }
 
     //console.log('frame');
+    drawData();
   };
 
   useGameLoop(update);
@@ -33,6 +55,20 @@ const HomePage = () => {
   useEffect(() => {
     setBoardBlockSize(calculateBlockSize(browserWindowSize, boardSize));
   }, [browserWindowSize, boardSize]);
+
+  function draw(gameBoard, snakeBody) {
+    if (!gameBoard) return;
+    gameBoard.innerHTML = '';
+    snakeBody.forEach((segment) => {
+      const snakeElement = document.createElement('div');
+      snakeElement.style.gridRowStart = segment.y;
+      snakeElement.style.gridColumnStart = segment.x;
+      snakeElement.classList.add('snake');
+      gameBoard.appendChild(snakeElement);
+    });
+  }
+
+  //console.log(gameBoardRef.current);
 
   return (
     <div className=" wrapper">
@@ -45,14 +81,22 @@ const HomePage = () => {
         <div className="score-text">High Score: 0</div>
       </div>
 
-      <GameBoard boardSize={boardSize} boardBlockSize={boardBlockSize} />
-      <CustomButton
-        btnClass={'btn'}
-        onClickCallback={() => {
-          snakeSpeedRef.current = snakeSpeedRef.current - 16;
-        }}
-      >
-        decrease snake speed
+      <GameBoard
+        boardSize={boardSize}
+        boardBlockSize={boardBlockSize}
+        ref={gameBoardRef}
+      />
+      <CustomButton btnClass={'btn-start'} onClickCallback={() => {}}>
+        Start
+      </CustomButton>
+      <CustomButton btnClass={'btn'} onClickCallback={() => {}}>
+        Pause
+      </CustomButton>
+      <CustomButton btnClass={'btn'} onClickCallback={() => {}}>
+        Resume
+      </CustomButton>
+      <CustomButton btnClass={'btn-restart'} onClickCallback={() => {}}>
+        Restart
       </CustomButton>
       <GameController />
       <div className="instruction-text">
