@@ -1,35 +1,16 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-const useGameLoop = ({ snakeSpeed, updateSnakePosition, updateGameBoard }) => {
+const useGameLoop = (update) => {
   const rafRef = useRef();
-  let lastSnakeMovementTime = 0;
-  const animate = useCallback(() => {
-    rafRef.current = requestAnimationFrame(function animate(currentTime) {
-      //   console.log('snake speed: ', snakeSpeed.current);
-      const secondsSinceLastSnakeMove = currentTime - lastSnakeMovementTime;
-      if (secondsSinceLastSnakeMove > snakeSpeed.current) {
-        lastSnakeMovementTime = currentTime;
-        // move local player snake inside this loop
-        // this block will run according to local player snake speed
-        updateSnakePosition();
-      }
-
-      {
-        // update snake positions of other player snakes
-        // this block will run every 16.67ms
-        updateGameBoard();
-      }
-
-      rafRef.current = requestAnimationFrame(animate);
-    });
-  }, []);
-
   useEffect(() => {
-    setTimeout(() => animate(), 3000);
+    rafRef.current = requestAnimationFrame(function frame(currentTime) {
+      update(currentTime);
+      rafRef.current = requestAnimationFrame(frame);
+    });
     return () => {
       cancelAnimationFrame(rafRef.current);
     };
-  }, [animate]);
+  }, [update]);
 };
 
 export { useGameLoop };

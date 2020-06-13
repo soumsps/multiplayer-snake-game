@@ -13,7 +13,20 @@ const HomePage = () => {
     column: 80,
   });
   const [boardBlockSize, setBoardBlockSize] = useState(null);
-  const snakeSpeed = useRef(200);
+  const snakeSpeedRef = useRef(200);
+
+  let lastSnakeMovementTime = 0;
+  const update = (currentTime) => {
+    const secondsSinceLastSnakeMove = currentTime - lastSnakeMovementTime;
+    if (secondsSinceLastSnakeMove > snakeSpeedRef.current) {
+      lastSnakeMovementTime = currentTime;
+      console.log('move snake');
+    }
+
+    console.log('frame');
+  };
+
+  useGameLoop(update);
 
   useEffect(() => {
     const extraColumnPadding = 4;
@@ -24,16 +37,6 @@ const HomePage = () => {
     else if (browserWindowSize.width < 1024) setBoardBlockSize(10);
     else if (browserWindowSize.width > 1024) setBoardBlockSize(11);
   }, [browserWindowSize, boardSize]);
-
-  const updateSnakePosition = () => {
-    console.log('move snake');
-  };
-
-  const updateGameBoard = () => {
-    console.log('frame');
-  };
-
-  useGameLoop({ snakeSpeed, updateSnakePosition, updateGameBoard });
 
   return (
     <div className=" wrapper">
@@ -48,13 +51,12 @@ const HomePage = () => {
 
       <GameBoard boardSize={boardSize} boardBlockSize={boardBlockSize} />
       <CustomButton
-        btnClass={'btn-game-control'}
+        btnClass={'btn'}
         onClickCallback={() => {
-          //   console.log(('button clicked', snakeSpeed.current));
-          snakeSpeed.current = snakeSpeed.current - 16;
+          snakeSpeedRef.current = snakeSpeedRef.current - 16;
         }}
       >
-        <i className="fas fa-arrow-left"></i>
+        decrease snake speed
       </CustomButton>
       <GameController />
       <div className="instruction-text">
