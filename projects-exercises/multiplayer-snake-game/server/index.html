@@ -1,0 +1,91 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+    <button id="newGame">new game</button>
+    <button id="joinGame">Join Game</button>
+    <input id="txtVal" />
+    <script>
+        let playerID = null;
+        let ws = new WebSocket('ws://localhost:8080');
+        let gameID = null;
+        let txtVal = document.getElementById('txtVal');
+        const CONNECT = 'CONNECT';
+        const CREATE = 'CREATE';
+        const CREATED = 'CREATED';
+        const JOIN = 'JOIN';
+        const JOINED = 'JOINED';
+        const UPDATE = 'UPDATE';
+        const PLAY = 'PLAY';
+        const url = window.location.href.split('?')[1] ? window.location.href.split('?')[1].split('gameID=')[1] : null;
+        let timerID = 0;
+        function keepAlive() {
+            const timeout = 20000;
+            if (ws.readyState == ws.OPEN) {
+                ws.send(JSON.stringify({ 'method': 'check' }));
+            }
+            timerID = setTimeout(keepAlive, timeout);
+        }
+        function cancelKeepAlive() {
+            if (timerID) {
+                clearTimeout(timerID);
+            }
+        }
+
+        const join = (id = null) => {
+            if (id) {
+                gameID = id
+            }
+            const payLoad = {
+                'method': JOIN,
+                'playerID': playerID,
+                'gameID': gameID
+            }
+            ws.send(JSON.stringify(payLoad))
+        }
+
+        ws.onopen = () => {
+            keepAlive();
+        }
+
+        ws.onclose = () => {
+            cancelKeepAlive();
+        }
+
+        ws.onmessage = (message) => {
+            const res = JSON.parse(message.data);
+
+            if (res.method === CONNECT) {
+                playerID = res.playerID;
+                if (url) {
+                    join(url);
+                    console.log('second player connected');
+                }
+            }
+
+            if (res.method === CREATED) {
+                console.log(`game id is`, res.game.id)
+                gameID = res.game.id;
+            }
+        }
+
+        const newGame = document.getElementById('newGame');
+        newGame.addEventListener('click', (e) => {
+            const payLoad = {
+                'method': CREATE,
+                'playerID': playerID
+            }
+            ws.send(JSON.stringify(payLoad))
+        })
+
+        const joinGame = document.getElementById('joinGame');
+        joinGame.addEventListener('click', e => {
+            join();
+        })
+    </script>
+</body>
+
+</html>
