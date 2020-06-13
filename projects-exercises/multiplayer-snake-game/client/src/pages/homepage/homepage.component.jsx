@@ -4,6 +4,7 @@ import GameBoard from '../../components/game-board/game-board.component';
 import CustomButton from '../../components/custom-button/custom-button.component';
 import { useWindowSize } from '../../custom-hooks/use-window-size.hook';
 import { useGameLoop } from '../../custom-hooks/use-game-loop.hook';
+import { calculateBlockSize } from '../../game-utility/game-board';
 import './homepage.styles.css';
 
 const HomePage = () => {
@@ -16,26 +17,21 @@ const HomePage = () => {
   const snakeSpeedRef = useRef(200);
 
   let lastSnakeMovementTime = 0;
+
   const update = (currentTime) => {
     const secondsSinceLastSnakeMove = currentTime - lastSnakeMovementTime;
     if (secondsSinceLastSnakeMove > snakeSpeedRef.current) {
       lastSnakeMovementTime = currentTime;
-      console.log('move snake');
+      //  console.log('move snake');
     }
 
-    console.log('frame');
+    //console.log('frame');
   };
 
   useGameLoop(update);
 
   useEffect(() => {
-    const extraColumnPadding = 4;
-    if (browserWindowSize.width < 820)
-      setBoardBlockSize(
-        browserWindowSize.width / (boardSize.column + extraColumnPadding)
-      );
-    else if (browserWindowSize.width < 1024) setBoardBlockSize(10);
-    else if (browserWindowSize.width > 1024) setBoardBlockSize(11);
+    setBoardBlockSize(calculateBlockSize(browserWindowSize, boardSize));
   }, [browserWindowSize, boardSize]);
 
   return (
