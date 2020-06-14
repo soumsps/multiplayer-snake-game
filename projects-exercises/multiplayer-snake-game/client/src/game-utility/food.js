@@ -28,4 +28,19 @@ const getRandomFoodPosition = (boardSize) => {
   return newFoodPosition;
 };
 
-export { drawFood, getRandomFoodPosition };
+const isFoodEaten = (snakeHead, foodPosition) => {
+  if (snakeHead[0] === foodPosition[0] && snakeHead[1] === foodPosition[1]) {
+    return true;
+  }
+  return false;
+};
+
+const removeOldFood = (gameBoard) => {
+  for (const node of gameBoard.childNodes) {
+    if (node.classList.value === 'food animate-food') {
+      gameBoard.removeChild(node);
+    }
+  }
+};
+
+export { drawFood, getRandomFoodPosition, isFoodEaten, removeOldFood };

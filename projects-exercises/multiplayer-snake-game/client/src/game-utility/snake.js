@@ -3,19 +3,28 @@ const drawSnake = (gameBoard, snakeBody, snakeColor) => {
   // only remove class='snake' child nodes
 
   for (const node of gameBoard.childNodes) {
-    if (node.classList.value === 'snake') {
+    if (
+      node.classList.value === 'snake' ||
+      node.classList.value === 'snake head'
+    ) {
       gameBoard.removeChild(node);
     }
   }
 
-  snakeBody.forEach((segment) => {
+  for (let i = 0; i < snakeBody.length; i++) {
+    const segment = snakeBody[i];
     const snakeElement = document.createElement('div');
     snakeElement.style.gridColumnStart = segment[0];
     snakeElement.style.gridRowStart = segment[1];
-    snakeElement.style.backgroundColor = snakeColor;
+
     snakeElement.classList.add('snake');
+    if (i === 0) {
+      snakeElement.classList.add('head');
+    } else {
+      snakeElement.style.backgroundColor = snakeColor;
+    }
     gameBoard.appendChild(snakeElement);
-  });
+  }
 };
 
 const updateSnake = (snakeRef) => {
@@ -35,7 +44,21 @@ const getSnakeBody = (snakeData) => {
   return snake;
 };
 
-const isSnakeDead = (snakeRef) => {};
+const isSnakeDead = (snakeRef, boardSize) => {
+  const snakeHead = getSnakeHead(snakeRef.current.body);
+  const snakeBody = getSnakeBody(snakeRef.current.body);
+  if (onSnake(snakeHead, snakeBody)) {
+    return true;
+  }
+
+  return false;
+};
+
+const onSnake = (snakeHead, snakeBody) => {
+  return snakeBody.some((segment, index) => {
+    return snakeHead[0] === segment[0] && snakeHead[1] === segment[1];
+  });
+};
 
 const moveSnake = (snakeRef) => {
   let oldSnakeBody = [...snakeRef.current.body];
@@ -58,4 +81,15 @@ const moveSnake = (snakeRef) => {
   snakeRef.current.body = [newSnakeHead, ...oldSnakeBody];
 };
 
-export { drawSnake, updateSnake, sendSnakeData };
+function growSnake(snakeBody) {
+  snakeBody.push([...snakeBody[snakeBody.length - 1]]);
+}
+
+export {
+  drawSnake,
+  updateSnake,
+  sendSnakeData,
+  getSnakeHead,
+  growSnake,
+  isSnakeDead,
+};
