@@ -5,7 +5,7 @@ import CustomButton from '../../components/custom-button/custom-button.component
 import { useWindowSize } from '../../custom-hooks/use-window-size.hook';
 import { useGameLoop } from '../../custom-hooks/use-game-loop.hook';
 import { calculateBlockSize } from '../../game-utility/game-board';
-import { drawSnake } from '../../game-utility/snake';
+import { drawSnake, updateSnake } from '../../game-utility/snake';
 import { drawFood, getRandomFoodPosition } from '../../game-utility/food';
 import './homepage.styles.css';
 
@@ -24,9 +24,9 @@ const HomePage = () => {
   const snakeRef = useRef({
     playerID: 'aaa-bbb',
     body: [
-      [4, 5],
-      [4, 6],
       [4, 7],
+      [4, 6],
+      [4, 5],
     ],
     color: 'red',
     speed: 200,
@@ -35,7 +35,9 @@ const HomePage = () => {
   const gameBoardRef = useRef(null);
   let lastSnakeMovementTime = 0;
 
-  const updateData = () => {};
+  const updateData = () => {
+    updateSnake(snakeRef);
+  };
 
   const drawData = () => {
     drawSnake(
