@@ -1,10 +1,35 @@
 .snake {
   background-color: rgb(179, 179, 179);
-  border: 1px solid black;
+  border: 1px solid rgb(73, 73, 73);
+  border-radius: 2px;
 }
 
 .food {
-  background-color: rgb(179, 179, 179);
-  border: 1px solid black;
-  border-radius: 20px;
+  background-color: rgb(104, 30, 224);
+  border-radius: 5px;
+}
+
+.animate-food {
+  animation: animateFood 2s infinite;
+}
+
+@keyframes animateFood {
+  0% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.2;
+  }
 }

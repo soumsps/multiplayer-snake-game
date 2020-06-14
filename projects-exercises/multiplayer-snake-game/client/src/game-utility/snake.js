@@ -1,6 +1,13 @@
 const drawSnake = (gameBoard, snakeBody, snakeColor) => {
   if (!gameBoard) return;
-  gameBoard.innerHTML = '';
+  // only remove class='snake' child nodes
+
+  for (const node of gameBoard.childNodes) {
+    if (node.classList.value === 'snake') {
+      gameBoard.removeChild(node);
+    }
+  }
+
   snakeBody.forEach((segment) => {
     const snakeElement = document.createElement('div');
     snakeElement.style.gridColumnStart = segment[0];
