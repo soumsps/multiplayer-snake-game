@@ -22,7 +22,7 @@ const HomePage = () => {
   //const [gameStatus, setGameStatus] = useState(null); // possible modes:  playing, paused, and finished
   const foodPositionRef = useRef(null);
   const snakeRef = useRef({
-    playerID: 'quft-yuytg',
+    playerID: 'aaa-bbb',
     body: [
       [4, 5],
       [4, 6],
@@ -30,6 +30,7 @@ const HomePage = () => {
     ],
     color: 'red',
     speed: 200,
+    direction: 'down',
   });
   const gameBoardRef = useRef(null);
   let lastSnakeMovementTime = 0;
@@ -93,7 +94,7 @@ const HomePage = () => {
       <CustomButton btnClass={'btn-restart'} onClickCallback={() => {}}>
         Restart
       </CustomButton>
-      <GameController />
+      <GameController snakeRef={snakeRef} />
       <div className="instruction-text">
         Tip: Use arrow buttons to control snake.
       </div>

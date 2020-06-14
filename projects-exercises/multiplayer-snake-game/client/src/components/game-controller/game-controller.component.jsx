@@ -2,42 +2,42 @@ import React, { useEffect, memo } from 'react';
 import CustomButton from '../custom-button/custom-button.component';
 import './game-controller.styles.css';
 
-const GameController = () => {
+const GameController = ({ snakeRef }) => {
   const KeyCodes = { LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 };
   console.log('game controller');
-  let snakeDirection = 'down';
+
   useEffect(() => {
     document.onkeydown = handleKeyDown;
   });
 
   const onLeftButtonPress = () => {
-    if (snakeDirection === 'right') {
+    if (snakeRef.current.direction === 'right') {
       return;
     }
-    snakeDirection = 'left';
+    snakeRef.current.direction = 'left';
     console.log('left');
   };
   const onUpButtonPress = () => {
-    if (snakeDirection === 'down') {
+    if (snakeRef.current.direction === 'down') {
       return;
     }
-    snakeDirection = 'up';
+    snakeRef.current.direction = 'up';
     console.log('up');
   };
 
   const onDownButtonPress = () => {
-    if (snakeDirection === 'up') {
+    if (snakeRef.current.direction === 'up') {
       return;
     }
-    snakeDirection = 'down';
+    snakeRef.current.direction = 'down';
     console.log('down');
   };
 
   const onRightButtonPress = () => {
-    if (snakeDirection === 'left') {
+    if (snakeRef.current.direction === 'left') {
       return;
     }
-    snakeDirection = 'right';
+    snakeRef.current.direction = 'right';
     console.log('right');
   };
 
