@@ -156,13 +156,17 @@ const HomePage = () => {
         ''
       )}
 
-      <GameController snakeRef={snakeRef} />
+      <GameController
+        snakeRef={snakeRef}
+        setGameStatus={setGameStatus}
+        gameStatus={gameStatus}
+      />
       <div className="instruction-text">
-        Enter button to Start / Restart
+        Use <b>Enter</b> key to Start / Restart
         <br />
-        Space button to Pause / Resume
+        Use <b>Space</b> key to Pause / Resume
         <br />
-        Use arrow buttons to control snake.
+        Use <b>Arrow</b> or <b>W,A,S,D</b> keys to control snake.
       </div>
     </div>
   );

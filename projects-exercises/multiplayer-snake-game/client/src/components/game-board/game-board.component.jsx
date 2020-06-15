@@ -4,7 +4,7 @@ import './game-board.styles.css';
 
 const GameBoard = forwardRef(({ boardSize, boardBlockSize }, ref) => {
   const boardStyle = {
-    backgroundColor: '#f5f4f4',
+    backgroundColor: '#f9f9f9',
     width: `${Math.round(boardSize.column * boardBlockSize)}px`,
     height: `${Math.round(boardSize.row * boardBlockSize)}px`,
     display: 'grid',
