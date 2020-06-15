@@ -55,7 +55,7 @@ const isSnakeDead = (snakeRef, boardSize) => {
 };
 
 const onSnake = (snakeHead, snakeBody) => {
-  return snakeBody.some((segment, index) => {
+  return snakeBody.some((segment) => {
     return snakeHead[0] === segment[0] && snakeHead[1] === segment[1];
   });
 };
