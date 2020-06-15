@@ -1,9 +1,6 @@
 .snake {
-  /* border: 1px solid rgb(73, 73, 73); */
-  border-radius: 3px;
-}
-.head {
   background-color: rgb(66, 66, 66);
+  border-radius: 3px;
 }
 
 .food {
@@ -17,14 +14,14 @@
 
 @keyframes animateFood {
   0% {
-    opacity: 0.2;
+    opacity: 0.3;
   }
   25% {
     opacity: 1;
   }
 
   50% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 
   75% {
@@ -32,6 +29,6 @@
   }
 
   100% {
-    opacity: 0.2;
+    opacity: 0.3;
   }
 }

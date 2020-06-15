@@ -3,10 +3,7 @@ const drawSnake = (gameBoard, snakeBody, snakeColor) => {
   // only remove class='snake' child nodes
 
   for (const node of gameBoard.childNodes) {
-    if (
-      node.classList.value === 'snake' ||
-      node.classList.value === 'snake head'
-    ) {
+    if (node.classList.value === 'snake') {
       gameBoard.removeChild(node);
     }
   }
@@ -19,16 +16,12 @@ const drawSnake = (gameBoard, snakeBody, snakeColor) => {
 
     snakeElement.classList.add('snake');
     if (i === 0) {
-      snakeElement.classList.add('head');
+      snakeElement.style.backgroundColor = 'black';
     } else {
       snakeElement.style.backgroundColor = snakeColor;
     }
     gameBoard.appendChild(snakeElement);
   }
-};
-
-const updateSnake = (snakeRef) => {
-  moveSnake(snakeRef);
 };
 
 const sendSnakeData = () => {};
@@ -87,9 +80,9 @@ function growSnake(snakeBody) {
 
 export {
   drawSnake,
-  updateSnake,
   sendSnakeData,
   getSnakeHead,
   growSnake,
   isSnakeDead,
+  moveSnake,
 };

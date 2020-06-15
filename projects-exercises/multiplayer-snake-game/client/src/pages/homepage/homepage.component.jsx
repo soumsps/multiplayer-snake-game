@@ -8,7 +8,7 @@ import { useGameLoop } from '../../custom-hooks/use-game-loop.hook';
 import { calculateBlockSize } from '../../game-utility/game-board';
 import {
   drawSnake,
-  updateSnake,
+  moveSnake,
   getSnakeHead,
   growSnake,
   isSnakeDead,
@@ -42,10 +42,12 @@ const HomePage = () => {
 
   const updateData = () => {
     if (isSnakeDead(snakeRef, boardSize)) {
+      setGameStatus('finished');
       console.log('snake dead');
+      return;
     }
 
-    updateSnake(snakeRef);
+    moveSnake(snakeRef);
 
     if (
       isFoodEaten(getSnakeHead(snakeRef.current.body), foodPositionRef.current)
