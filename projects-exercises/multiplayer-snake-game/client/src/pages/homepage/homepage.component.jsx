@@ -39,7 +39,7 @@ const HomePage = () => {
   const snakeRef = useRef(DEFAULT_SNAKE_DATA);
   const foodPositionRef = useRef(null);
   const gameBoardRef = useRef(null);
-  let lastSnakeMovementTime = 0;
+  const lastSnakeMoveTimeRef = useRef(0);
 
   const updateData = () => {
     if (isSnakeDead(snakeRef, boardSize)) {
@@ -70,17 +70,16 @@ const HomePage = () => {
 
   // runs every 16.67ms
   const update = (currentTime) => {
-    const secondsSinceLastSnakeMove = currentTime - lastSnakeMovementTime;
+    const secondsSinceLastSnakeMove =
+      currentTime - lastSnakeMoveTimeRef.current;
     if (secondsSinceLastSnakeMove > snakeRef.current.speed) {
-      lastSnakeMovementTime = currentTime;
+      lastSnakeMoveTimeRef.current = currentTime;
       if (gameStatus === 'playing') {
         updateData();
       }
     }
     drawData();
   };
-
-  useGameLoop(update);
 
   useEffect(() => {
     foodPositionRef.current = getRandomFoodPosition(boardSize);
@@ -89,6 +88,8 @@ const HomePage = () => {
   useEffect(() => {
     setBoardBlockSize(calculateBlockSize(browserWindowSize, boardSize));
   }, [browserWindowSize, boardSize]);
+
+  useGameLoop(update);
 
   return (
     <div className=" wrapper">
