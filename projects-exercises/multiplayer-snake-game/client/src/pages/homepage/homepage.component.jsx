@@ -19,30 +19,24 @@ import {
   isFoodEaten,
   removeOldFood,
 } from '../../game-utility/food';
+import {
+  DEFAULT_BOARD_SIZE,
+  DEFAULT_IS_SINGLE_PLAYER_MODE,
+  DEFAULT_GAME_STATUS,
+  DEFAULT_SNAKE_DATA,
+} from '../../game-utility/constant';
 import './homepage.styles.css';
 
 const HomePage = () => {
   const browserWindowSize = useCallback(useWindowSize());
-  const [boardSize] = useState({
-    row: 30,
-    column: 50,
-  });
+  const [boardSize] = useState(DEFAULT_BOARD_SIZE);
   const [boardBlockSize, setBoardBlockSize] = useState(null);
 
-  const [isSinglePlayerMode] = useState(true);
-  const [gameStatus, setGameStatus] = useState('not-started'); // possible modes: not-started, playing, paused, and finished
+  const [isSinglePlayerMode] = useState(DEFAULT_IS_SINGLE_PLAYER_MODE);
+  const [gameStatus, setGameStatus] = useState(DEFAULT_GAME_STATUS); // possible modes: not-started, playing, paused, and finished
+
+  const snakeRef = useRef(DEFAULT_SNAKE_DATA);
   const foodPositionRef = useRef(null);
-  const snakeRef = useRef({
-    playerID: 'aaa-bbb',
-    body: [
-      [4, 7],
-      [4, 6],
-      [4, 5],
-    ],
-    color: 'red',
-    speed: 160,
-    direction: 'down',
-  });
   const gameBoardRef = useRef(null);
   let lastSnakeMovementTime = 0;
 
