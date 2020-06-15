@@ -34,7 +34,10 @@ const HomePage = () => {
   const [boardBlockSize, setBoardBlockSize] = useState(null);
 
   const [isSinglePlayerMode] = useState(DEFAULT_IS_SINGLE_PLAYER_MODE);
-  const [gameStatus, setGameStatus] = useState(DEFAULT_GAME_STATUS); // possible modes: not-started, playing, paused, and finished
+  // possible modes: not-started, playing, paused, and finished
+  const [gameStatus, setGameStatus] = useState(DEFAULT_GAME_STATUS);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
 
   const snakeRef = useRef({ ...DEFAULT_SNAKE_DATA });
   const foodPositionRef = useRef(null);
@@ -55,7 +58,14 @@ const HomePage = () => {
       growSnake(snakeRef.current.body);
       removeOldFood(gameBoardRef.current);
       foodPositionRef.current = getRandomFoodPosition(boardSize);
+      updateScore();
     }
+  };
+
+  const updateScore = () => {
+    const newScore = score + 1;
+    setScore(newScore);
+    if (newScore > highScore) setHighScore(newScore);
   };
 
   const drawData = () => {
@@ -82,6 +92,7 @@ const HomePage = () => {
 
   const onRestartButtonPress = (snakeRef) => {
     snakeRef.current = { ...DEFAULT_SNAKE_DATA };
+    setScore(0);
   };
 
   useEffect(() => {
@@ -100,9 +111,9 @@ const HomePage = () => {
         <h1 className="game-title">Snake Game</h1>
       </header>
       <div className="scoreboard">
-        <div className="score-text">Score: 0</div>
+        <div className="score-text">Score: {score}</div>
 
-        <div className="score-text">High Score: 0</div>
+        <div className="score-text">High Score: {highScore}</div>
       </div>
 
       <GameBoard
