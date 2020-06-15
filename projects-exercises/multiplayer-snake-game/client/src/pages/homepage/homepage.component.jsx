@@ -36,7 +36,7 @@ const HomePage = () => {
   const [isSinglePlayerMode] = useState(DEFAULT_IS_SINGLE_PLAYER_MODE);
   const [gameStatus, setGameStatus] = useState(DEFAULT_GAME_STATUS); // possible modes: not-started, playing, paused, and finished
 
-  const snakeRef = useRef(DEFAULT_SNAKE_DATA);
+  const snakeRef = useRef({ ...DEFAULT_SNAKE_DATA });
   const foodPositionRef = useRef(null);
   const gameBoardRef = useRef(null);
   const lastSnakeMoveTimeRef = useRef(0);
@@ -44,7 +44,6 @@ const HomePage = () => {
   const updateData = () => {
     if (isSnakeDead(snakeRef, boardSize)) {
       setGameStatus('finished');
-      console.log('snake dead');
       return;
     }
 
@@ -79,6 +78,10 @@ const HomePage = () => {
       }
     }
     drawData();
+  };
+
+  const onRestartButtonPress = (snakeRef) => {
+    snakeRef.current = { ...DEFAULT_SNAKE_DATA };
   };
 
   useEffect(() => {
@@ -151,6 +154,7 @@ const HomePage = () => {
         <CustomButton
           btnClass={'btn-restart'}
           onClickCallback={() => {
+            onRestartButtonPress(snakeRef);
             setGameStatus('playing');
           }}
         >
@@ -164,6 +168,7 @@ const HomePage = () => {
         snakeRef={snakeRef}
         setGameStatus={setGameStatus}
         gameStatus={gameStatus}
+        onRestartButtonPress={onRestartButtonPress}
       />
       <div className="instruction-text">
         Use <b>Enter</b> key to Start / Restart

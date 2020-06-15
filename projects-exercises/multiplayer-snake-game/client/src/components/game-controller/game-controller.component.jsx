@@ -2,7 +2,12 @@ import React, { useEffect, memo } from 'react';
 import CustomButton from '../custom-button/custom-button.component';
 import './game-controller.styles.css';
 
-const GameController = ({ snakeRef, gameStatus, setGameStatus }) => {
+const GameController = ({
+  snakeRef,
+  gameStatus,
+  setGameStatus,
+  onRestartButtonPress,
+}) => {
   const KeyCodes = {
     LEFT: 37,
     A: 65,
@@ -56,8 +61,11 @@ const GameController = ({ snakeRef, gameStatus, setGameStatus }) => {
     }
   };
 
-  const onEnterButtonPress = (gameStatus, setGameStatus) => {
-    if (gameStatus !== 'playing') {
+  const onEnterButtonPress = (gameStatus, setGameStatus, snakeRef) => {
+    if (gameStatus === 'not-started') {
+      setGameStatus('playing');
+    } else if (gameStatus === 'finished') {
+      onRestartButtonPress(snakeRef);
       setGameStatus('playing');
     }
   };
@@ -92,7 +100,7 @@ const GameController = ({ snakeRef, gameStatus, setGameStatus }) => {
         onSpaceButtonPress(gameStatus, setGameStatus);
         break;
       case KeyCodes.ENTER:
-        onEnterButtonPress(gameStatus, setGameStatus);
+        onEnterButtonPress(gameStatus, setGameStatus, snakeRef);
         break;
       default:
     }
