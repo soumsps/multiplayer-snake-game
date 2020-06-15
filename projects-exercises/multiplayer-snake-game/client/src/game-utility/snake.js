@@ -38,38 +38,55 @@ const getSnakeBody = (snakeData) => {
 };
 
 const isSnakeDead = (snakeRef, boardSize) => {
-  const snakeHead = getSnakeHead(snakeRef.current.body);
+  const snakeNextHead = getNextSnakeHeadPosition(snakeRef);
   const snakeBody = getSnakeBody(snakeRef.current.body);
-  if (onSnake(snakeHead, snakeBody)) {
+  if (
+    isSnakeOnItsBody(snakeNextHead, snakeBody) ||
+    isSnakeOutsideBoard(snakeNextHead, boardSize)
+  ) {
     return true;
   }
 
   return false;
 };
 
-const onSnake = (snakeHead, snakeBody) => {
+const isSnakeOnItsBody = (snakeHead, snakeBody) => {
   return snakeBody.some((segment) => {
     return snakeHead[0] === segment[0] && snakeHead[1] === segment[1];
   });
 };
 
-const moveSnake = (snakeRef) => {
-  let oldSnakeBody = [...snakeRef.current.body];
-  let newSnakeHead = getSnakeHead(oldSnakeBody);
+const isSnakeOutsideBoard = (snakeHead, boardSize) => {
+  return (
+    snakeHead[0] < 1 ||
+    snakeHead[0] > boardSize.column ||
+    snakeHead[1] < 1 ||
+    snakeHead[1] > boardSize.row
+  );
+};
 
-  if (snakeRef.current.direction === 'left') {
+const getNextSnakeHeadPosition = (snakeRef) => {
+  let newSnakeHead = getSnakeHead(snakeRef.current.body);
+  const snakeDirection = snakeRef.current.direction;
+
+  if (snakeDirection === 'left') {
     newSnakeHead[0] -= 1;
   }
-  if (snakeRef.current.direction === 'right') {
+  if (snakeDirection === 'right') {
     newSnakeHead[0] += 1;
   }
-  if (snakeRef.current.direction === 'up') {
+  if (snakeDirection === 'up') {
     newSnakeHead[1] -= 1;
   }
-  if (snakeRef.current.direction === 'down') {
+  if (snakeDirection === 'down') {
     newSnakeHead[1] += 1;
   }
 
+  return newSnakeHead;
+};
+
+const moveSnake = (newSnakeHead, snakeRef) => {
+  let oldSnakeBody = [...snakeRef.current.body];
   oldSnakeBody.pop();
   snakeRef.current.body = [newSnakeHead, ...oldSnakeBody];
 };
@@ -85,4 +102,5 @@ export {
   growSnake,
   isSnakeDead,
   moveSnake,
+  getNextSnakeHeadPosition,
 };

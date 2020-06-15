@@ -12,6 +12,7 @@ import {
   getSnakeHead,
   growSnake,
   isSnakeDead,
+  getNextSnakeHeadPosition,
 } from '../../game-utility/snake';
 import {
   drawFood,
@@ -47,7 +48,7 @@ const HomePage = () => {
       return;
     }
 
-    moveSnake(snakeRef);
+    moveSnake(getNextSnakeHeadPosition(snakeRef), snakeRef);
 
     if (
       isFoodEaten(getSnakeHead(snakeRef.current.body), foodPositionRef.current)
