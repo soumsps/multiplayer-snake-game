@@ -33,8 +33,7 @@ const HomePage = () => {
   const browserWindowSize = useCallback(useWindowSize());
   const [boardSize] = useState({ ...DEFAULT_BOARD_SIZE });
   const [boardBlockSize, setBoardBlockSize] = useState(null);
-  const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [scoreBoard, setScoreBoard] = useState({ score: 0, highScore: 0 });
 
   const [isSinglePlayerMode] = useState(DEFAULT_IS_SINGLE_PLAYER_MODE);
   // possible modes: not-started, playing, paused, and finished
@@ -45,7 +44,17 @@ const HomePage = () => {
   const gameBoardRef = useRef(null);
   const lastSnakeMoveTimeRef = useRef(0);
 
-  const updateData = () => {
+  const updateScore = useCallback(() => {
+    setScoreBoard((state) => {
+      const newScore = state.score + 1;
+      if (newScore > state.highScore) {
+        return { score: newScore, highScore: newScore };
+      }
+      return { ...state, score: newScore };
+    });
+  }, []);
+
+  const updateData = useCallback(() => {
     if (isSnakeDead(snakeRef, boardSize)) {
       setGameStatus('finished');
       return;
@@ -62,39 +71,36 @@ const HomePage = () => {
       updateScore();
       updateSnakeSpeed(snakeRef);
     }
-  };
+  }, [boardSize, updateScore]);
 
-  const updateScore = () => {
-    const newScore = score + 1;
-    setScore(newScore);
-    if (newScore > highScore) setHighScore(newScore);
-  };
-
-  const drawData = () => {
+  const drawData = useCallback(() => {
     drawSnake(
       gameBoardRef.current,
       snakeRef.current.body,
       snakeRef.current.color
     );
     drawFood(gameBoardRef.current, foodPositionRef.current);
-  };
+  }, []);
 
   // runs every 16.67ms
-  const update = (currentTime) => {
-    const secondsSinceLastSnakeMove =
-      currentTime - lastSnakeMoveTimeRef.current;
-    if (secondsSinceLastSnakeMove > snakeRef.current.speed) {
-      lastSnakeMoveTimeRef.current = currentTime;
-      if (gameStatus === 'playing') {
-        updateData();
+  const update = useCallback(
+    (currentTime) => {
+      const secondsSinceLastSnakeMove =
+        currentTime - lastSnakeMoveTimeRef.current;
+      if (secondsSinceLastSnakeMove > snakeRef.current.speed) {
+        lastSnakeMoveTimeRef.current = currentTime;
+        if (gameStatus === 'playing') {
+          updateData();
+        }
       }
-    }
-    drawData();
-  };
+      drawData();
+    },
+    [updateData, drawData, gameStatus]
+  );
 
   const onRestartButtonPress = (snakeRef) => {
     snakeRef.current = { ...DEFAULT_SNAKE_DATA };
-    setScore(0);
+    setScoreBoard((state) => ({ ...state, score: 0 }));
   };
 
   useEffect(() => {
@@ -113,9 +119,9 @@ const HomePage = () => {
         <h1 className="game-title">Snake Game</h1>
       </header>
       <div className="scoreboard">
-        <div className="score-text">Score: {score}</div>
+        <div className="score-text">Score: {scoreBoard.score}</div>
 
-        <div className="score-text">High Score: {highScore}</div>
+        <div className="score-text">High Score: {scoreBoard.highScore}</div>
       </div>
 
       <GameBoard
