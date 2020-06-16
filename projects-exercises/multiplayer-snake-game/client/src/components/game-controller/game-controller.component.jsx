@@ -107,32 +107,86 @@ const GameController = ({
   };
 
   return (
-    <div className="mobile-controls">
-      <CustomButton
-        btnClass={'btn-game-control'}
-        onClickCallback={onLeftButtonPress}
-      >
-        <i className="fas fa-arrow-left"></i>
-      </CustomButton>
-      <CustomButton
-        btnClass={'btn-game-control'}
-        onClickCallback={onUpButtonPress}
-      >
-        <i className="fas fa-arrow-up"></i>
-      </CustomButton>
-      <CustomButton
-        btnClass={'btn-game-control'}
-        onClickCallback={onDownButtonPress}
-      >
-        <i className="fas fa-arrow-down"></i>
-      </CustomButton>
-      <CustomButton
-        btnClass={'btn-game-control'}
-        onClickCallback={onRightButtonPress}
-      >
-        <i className="fas fa-arrow-right"></i>
-      </CustomButton>
-    </div>
+    <>
+      {gameStatus === 'not-started' ? (
+        <CustomButton
+          btnClass={'btn-start'}
+          onClickCallback={() => {
+            setGameStatus('playing');
+          }}
+        >
+          Start
+        </CustomButton>
+      ) : (
+        ''
+      )}
+
+      {gameStatus === 'playing' ? (
+        <CustomButton
+          btnClass={'btn-pause'}
+          onClickCallback={() => {
+            setGameStatus('paused');
+          }}
+        >
+          Pause
+        </CustomButton>
+      ) : (
+        ''
+      )}
+
+      {gameStatus === 'paused' ? (
+        <CustomButton
+          btnClass={'btn-resume'}
+          onClickCallback={() => {
+            setGameStatus('playing');
+          }}
+        >
+          Resume
+        </CustomButton>
+      ) : (
+        ''
+      )}
+
+      {gameStatus === 'finished' ? (
+        <CustomButton
+          btnClass={'btn-restart'}
+          onClickCallback={() => {
+            onRestartButtonPress(snakeRef);
+            setGameStatus('playing');
+          }}
+        >
+          Restart
+        </CustomButton>
+      ) : (
+        ''
+      )}
+      <div className="mobile-controls">
+        <CustomButton
+          btnClass={'btn-game-control'}
+          onClickCallback={onLeftButtonPress}
+        >
+          <i className="fas fa-arrow-left"></i>
+        </CustomButton>
+        <CustomButton
+          btnClass={'btn-game-control'}
+          onClickCallback={onUpButtonPress}
+        >
+          <i className="fas fa-arrow-up"></i>
+        </CustomButton>
+        <CustomButton
+          btnClass={'btn-game-control'}
+          onClickCallback={onDownButtonPress}
+        >
+          <i className="fas fa-arrow-down"></i>
+        </CustomButton>
+        <CustomButton
+          btnClass={'btn-game-control'}
+          onClickCallback={onRightButtonPress}
+        >
+          <i className="fas fa-arrow-right"></i>
+        </CustomButton>
+      </div>
+    </>
   );
 };
 

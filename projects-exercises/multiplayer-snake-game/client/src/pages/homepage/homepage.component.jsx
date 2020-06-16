@@ -117,9 +117,13 @@ const HomePage = () => {
     <div className=" wrapper">
       <header className="header">
         <h1 className="game-title">Snake Game</h1>
+        <small>Single player Mode</small>
       </header>
       <div className="scoreboard">
         <div className="score-text">Score: {scoreBoard.score}</div>
+        <CustomButton btnClass={'btn-normal'} onClickCallback={() => {}}>
+          Start Multiplayer Game
+        </CustomButton>
 
         <div className="score-text">High Score: {scoreBoard.highScore}</div>
       </div>
@@ -129,59 +133,6 @@ const HomePage = () => {
         boardBlockSize={boardBlockSize}
         ref={gameBoardRef}
       ></GameBoard>
-
-      {gameStatus === 'not-started' ? (
-        <CustomButton
-          btnClass={'btn-start'}
-          onClickCallback={() => {
-            setGameStatus('playing');
-          }}
-        >
-          Start
-        </CustomButton>
-      ) : (
-        ''
-      )}
-
-      {gameStatus === 'playing' ? (
-        <CustomButton
-          btnClass={'btn-pause'}
-          onClickCallback={() => {
-            setGameStatus('paused');
-          }}
-        >
-          Pause
-        </CustomButton>
-      ) : (
-        ''
-      )}
-
-      {gameStatus === 'paused' ? (
-        <CustomButton
-          btnClass={'btn-resume'}
-          onClickCallback={() => {
-            setGameStatus('playing');
-          }}
-        >
-          Resume
-        </CustomButton>
-      ) : (
-        ''
-      )}
-
-      {gameStatus === 'finished' ? (
-        <CustomButton
-          btnClass={'btn-restart'}
-          onClickCallback={() => {
-            onRestartButtonPress(snakeRef);
-            setGameStatus('playing');
-          }}
-        >
-          Restart
-        </CustomButton>
-      ) : (
-        ''
-      )}
 
       <GameController
         snakeRef={snakeRef}
