@@ -13,6 +13,7 @@ import {
   growSnake,
   isSnakeDead,
   getNextSnakeHeadPosition,
+  updateSnakeSpeed,
 } from '../../game-utility/snake';
 import {
   drawFood,
@@ -30,14 +31,14 @@ import './homepage.styles.css';
 
 const HomePage = () => {
   const browserWindowSize = useCallback(useWindowSize());
-  const [boardSize] = useState(DEFAULT_BOARD_SIZE);
+  const [boardSize] = useState({ ...DEFAULT_BOARD_SIZE });
   const [boardBlockSize, setBoardBlockSize] = useState(null);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
 
   const [isSinglePlayerMode] = useState(DEFAULT_IS_SINGLE_PLAYER_MODE);
   // possible modes: not-started, playing, paused, and finished
   const [gameStatus, setGameStatus] = useState(DEFAULT_GAME_STATUS);
-  const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
 
   const snakeRef = useRef({ ...DEFAULT_SNAKE_DATA });
   const foodPositionRef = useRef(null);
@@ -59,6 +60,7 @@ const HomePage = () => {
       removeOldFood(gameBoardRef.current);
       foodPositionRef.current = getRandomFoodPosition(boardSize);
       updateScore();
+      updateSnakeSpeed(snakeRef);
     }
   };
 

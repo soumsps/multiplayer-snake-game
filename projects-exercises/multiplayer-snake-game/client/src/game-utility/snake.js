@@ -95,6 +95,12 @@ function growSnake(snakeBody) {
   snakeBody.push([...snakeBody[snakeBody.length - 1]]);
 }
 
+const updateSnakeSpeed = (snakeRef) => {
+  if (snakeRef.current.speed > 70) {
+    snakeRef.current.speed -= 5;
+  }
+};
+
 export {
   drawSnake,
   sendSnakeData,
@@ -103,4 +109,5 @@ export {
   isSnakeDead,
   moveSnake,
   getNextSnakeHeadPosition,
+  updateSnakeSpeed,
 };

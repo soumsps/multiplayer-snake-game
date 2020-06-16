@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 const useGameLoop = (update) => {
   const rafRef = useRef();
   useEffect(() => {
+    console.log('gameloop inside');
     rafRef.current = requestAnimationFrame(function frame(currentTime) {
       update(currentTime);
       rafRef.current = requestAnimationFrame(frame);
