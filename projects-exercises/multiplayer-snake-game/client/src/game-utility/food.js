@@ -24,7 +24,6 @@ const drawFood = (gameBoard, food) => {
 const getRandomFoodPosition = (boardSize) => {
   let newFoodPosition;
   newFoodPosition = randomGridPosition(boardSize);
-  console.log(newFoodPosition);
   return newFoodPosition;
 };
 

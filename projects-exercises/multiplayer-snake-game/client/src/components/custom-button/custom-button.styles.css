@@ -23,6 +23,13 @@
   margin: 15px;
 }
 
+.btn-normal {
+  color: #454545;
+  font-weight: 600;
+  background-color: #e1e1e1;
+  border: 2px solid #9e9e9e;
+}
+
 .btn-start {
   color: #003a67;
   font-weight: 600;
